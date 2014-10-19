@@ -2,9 +2,10 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <vector>
+#include <glm/glm.hpp>
 
 #include "Renderer.h"
-
 
 /*
 by initializing, the renderer check, if the OS support OpenGL
@@ -16,29 +17,31 @@ Renderer::Renderer()
 	printInfo();
 }
 
-
 Renderer::~Renderer()
 {
 }
 
 int numberOfPoints;
+
 /*
 get an object, now only vertices, and load it to the VBO & VAO
 */
-void Renderer::loadObject(GLfloat vertices[], int anzahl)
+void Renderer::loadObject(std::vector<glm::vec3> *m_vertices)
 {
-	numberOfPoints = anzahl/8;
 
-	GLuint vertexbuffer;
-	glGenBuffers(1, &vertexbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, anzahl, vertices, GL_STATIC_DRAW);
+	numberOfPoints = m_vertices->size();
 
-	GLuint vertexarray;
-	glGenVertexArrays(1, &vertexarray);
-	glBindVertexArray(vertexarray);
+	GLuint vertexBuffer;
+	glGenBuffers(1, &vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, m_vertices->size() * sizeof(glm::vec3), &m_vertices->at(0), GL_STATIC_DRAW);
+
+	GLuint vertexArray;
+	glGenVertexArrays(1, &vertexArray);
+	glBindVertexArray(vertexArray);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 /*

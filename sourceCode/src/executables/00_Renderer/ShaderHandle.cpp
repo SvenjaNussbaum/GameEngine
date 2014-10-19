@@ -28,9 +28,13 @@ ShaderHandle::ShaderHandle(std::string vertexShader, std::string fragmentShader)
 	std::string filePathOfSource(str);
 	
 	//translate the path to the shader paths
-	this->vertexShaderPath += filePathOfSource + "src\\shaders\\" + vertexShader;
-	this->fragmentShaderPath += filePathOfSource + "src\\shaders\\" + fragmentShader;
+	//this->vertexShaderPath += filePathOfSource + "src\\shaders\\" + vertexShader;
+	//this->fragmentShaderPath += filePathOfSource + "src\\shaders\\" + fragmentShader;
+	this->vertexShaderPath += SHADERS_PATH + vertexShader;
+	this->fragmentShaderPath += SHADERS_PATH +fragmentShader;
 
+	//this->vertexShaderPath += "C:\\Users\\Marcel\\Documents\\GitHub\\GameEngine\\sourceCode\\src\\shaders\\" + vertexShader;
+	//this->fragmentShaderPath += "C:\\Users\\Marcel\\Documents\\GitHub\\GameEngine\\sourceCode\\src\\shaders\\" + fragmentShader;
 	//Open, compile and link Shader
 	makeShaderProgram(&vertexShaderPath[0],&fragmentShaderPath[0]);
 }
