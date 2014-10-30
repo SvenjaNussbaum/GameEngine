@@ -1,9 +1,11 @@
-#include "Defs.h"
-
+#include "DefinitionAndInclude.h"
 #include "Renderer.h"
 #include "Window.h"
 #include "Shader.h"
 #include "FBO.h"
+#include "Node.h"
+#include "Scenegraph.h"
+#include "UniformManager.h"
 
 //Example
 std::vector<glm::vec3> m_vertices;
@@ -53,37 +55,37 @@ int main()
     glewInit();
     
 	//our shader
-	Shader* redShader = new Shader("//ColorShader//colorShader.vert", "//ColorShader//colorShader.frag");
+	Shader* redShader = new Shader("//RedShader//redShader.vert", ""/*geom*/, "" /*tessC*/, ""/*tessE*/, "//RedShader//redShader.frag", ""/*com*/);
 
 	//our renderer
 	Renderer* renderer = new Renderer();
 	renderer->loadObject(&m_vertices);
 
-	FBO fbo(800, 600);
+	int height = 800;
+	//BUG!!!
+	//height = window->getHeight();
+	FBO fbo(height, 600);
 
 	//Gameloop
     while( !glfwWindowShouldClose(window->getWindow()))
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		timeMeasuring(2000);
 
 		//FBO
 		fbo.bind();
 		glViewport(0, 0, 800, 600);
-		//glClear(GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		renderer->render(window->getWindow());
 		fbo.unbind();
 
 		//Szene drawen
 		glViewport(0, 0, 800, 600);
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		renderer->render(window->getWindow());
-		glfwSwapBuffers(window->getWindow());
-		glfwPollEvents();
-		
-    }
 
+		glfwSwapBuffers(window->getWindow());
+		glfwPollEvents();		
+    }
 	window->close();
     return 0;
 }
